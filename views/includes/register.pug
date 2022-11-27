@@ -1,0 +1,52 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(rel='stylesheet', type='text/css', href='css/main.css')
+        link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        title='Registro - Galileo Champions'
+    body
+        section(class='material-half-bg')
+            div(class='cover')
+        section(class='login-content')
+            div(class='logo')
+                h1 Galileo Champions
+            div(class='tile')
+                div(class='tile-body')
+                    div(class='title')
+                        h3(class='title-title') Registro
+                        div(class='title-body')
+                            form(class='form-horizontal', action='/api/user', method='POST')
+                                input(type='hidden', name='_csrf', value=csrfToken)
+                                div(class='form-group')
+                                    label(class='control-label') Email
+                                    input(class='form-control', type='text', placeholder='Email', autofocus=true, name='email', required)
+                                div(class='form-group')
+                                    label(class='control-label') Nombre
+                                    input(class='form-control', type='text', placeholder='Nombres', name='firstname', required)
+                                div(class='form-group')
+                                    label(class='control-label') Apellidos
+                                    input(class='form-control', type='text', placeholder='Apellidos', name='lastname', required)
+                                div(class='form-group')
+                                    label(class='control-label') Contraseña
+                                    input(class='form-control', type='password', placeholder='Contraseña', name='password', required)
+                                div(class='form-group')
+                                    label(class='control-label') Repetir contraseña
+                                    input(class='form-control', type='password', placeholder='Contraseña', name='password2', required)
+                                div(class='form-group btn-container')
+                                    button(class='btn btn-primary btn-block') Enviar
+                                        i(class='fa fa-sign-in fa-lg fa-fw')
+                                div(class='form-group btn-container')
+                                    a(class='btn btn-outline-dark btn-block', href='/api/google', role='button', style='text-transform:none') Registrarme con Google
+                                        img(width='20px', style='margin-bottom:3px; margin-right:5px', alt='Google sign-in', src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png')
+
+        include views/includes/_javascript
+
+        script(type='text/javascript').
+            // Login Page Flipbox control
+            $('.login-content [data-toggle="flip"]').click(function () {
+                $('.login-box').toggleClass('flipped');
+                return false;
+            });

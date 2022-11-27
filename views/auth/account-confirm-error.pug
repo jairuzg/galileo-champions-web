@@ -1,0 +1,28 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(rel='stylesheet', type='text/css', href='css/main.css')
+        link(rel='stylesheet', type='text/css', href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css')
+        link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        title='Registro - Galileo Champions'
+    body
+        section(class='material-half-bg')
+            div(class='cover')
+        section(class='login-content')
+            div(class='logo')
+                h1 Galileo Champions
+            .tile
+                h3(class='tile-title') Registro fallido
+                .tile-body
+                    .bs-component
+                        .alert.alert-danger
+                            .strong Oops, al parecer encontramos unos errores al tratar de validar tu cuenta!
+                            if errors
+                                each error in errors
+                                    ul
+                                        li=error.msg || error
+
+        include /includes/_javascript

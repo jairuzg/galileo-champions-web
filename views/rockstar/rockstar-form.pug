@@ -1,0 +1,106 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(rel='stylesheet', type='text/css', href='css/main.css')
+        link(rel='stylesheet', type='text/css', href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css')
+        link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        title='Nominaciones Rockstar - Galileo Champions'
+        style.
+            .material-half-bg .cover {
+                background-color: rgb(103, 58, 183);
+                height: 50vh;
+            }
+    body
+        section.material-half-bg
+            .cover
+        section.login-content
+            div(class='logo')
+                h1 Galileo Champions
+            .container-fluid
+                form
+                    .row
+                        .col-md-2.col-lg-4
+                        .col-md-8.col-lg-4
+                            .tile
+                                .tile-header
+                                    h2 Galileo Rockstar
+                                .tile-body
+                                    .form-group Nominacion del Galileo Rockstar consiste en nominar a algun estudiante del cual hayas recibido apoyo o que ha influido positivamente en tu trayecto academico.
+                        .col-md-2.col-lg-4
+                    .row
+                        .col-md-2.col-lg-4
+                        .col-md-8.col-lg-4
+                            .tile
+                                .tile-header
+                                    h3.tile-title Escoge el correo de la persona que estas nominando
+                                .tile-body
+                                    .form-group
+                                        select(class='form-control', id='nominatedSelect', multiple='')
+                        .col-md-2.col-lg-4
+                    .row
+                        .col-md-2.col-lg-4
+                        .col-md-8.col-lg-4
+                            .tile
+                                .tile-header
+                                    h3.tile-title ¿Qué te llevó a votar por esta persona, cuál es el motivo por el cual nominas a esta persona?
+                                .tile-body
+                                    .form-group
+                                        textarea.form-control
+                        .col-md-2.col-lg-4
+                    .row
+                        .col-md-2.col-lg-4
+                        .col-md-8.col-lg-4
+                            .tile
+                                .tile-header
+                                    h3.tile-title ¿De qué manera influye en tu carrera contar con el apoyo de esta persona o de cualquier otro estudiante?
+                                .tile-body
+                                    .form-group
+                                        textarea.form-control
+                        .col-md-2.col-lg-4
+                    .row
+                        .col-md-2.col-lg-4
+                        .col-md-8.col-lg-4
+                            .row
+                                .col-md-6.text-left
+                                    button.btn.btn-primary.btn-lg Enviar
+                                .col-md-6.text-right
+                                    button.btn.btn-lg.btn-light Borrar formulario
+                        .col-md-2.col-lg-4
+                    .row
+                        .col-md-2.col-lg-4
+                        .col-md-8.col-lg-4
+                            div
+                                br
+                                p.small Este formulario es un prototipo del proyecto Galileo Champions
+                        .col-md-2.col-lg-4
+        include /includes/_javascript
+        script(type="text/javascript", src="/js/plugins/select2.min.js")
+        script.
+            const backendUrl = '#{backendUrl}';
+            $('#nominatedSelect').select2({
+                multiple: false,
+                ajax: {
+                    url: `${backendUrl}/api/students/search`,
+                    dataType: 'json',
+                    data: function(params) {
+                        let query = {
+                            criteria: params.term
+                        }
+                        return query;
+                    },
+                    processResults: function(data){
+                        const items = data.students.map(student => {
+                            return {
+                                id: student.email,
+                                text: `${student.firstname} ${student.lastname} <${student.email}>`
+                            }
+                        });
+                        return {
+                            results: items
+                        }
+                    }
+                }
+            });

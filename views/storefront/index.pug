@@ -1,0 +1,27 @@
+extends ../layout.pug
+
+block variables
+    - var activePage = 'blank-page';
+    - var activeGroup = 'pages';
+
+block title
+    title Galileo Champions - No paras de ganar
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-dashboard
+                |  Blank Page
+            p Aqui es donde empieza tu crecimiento
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-home.fa-lg
+            li.breadcrumb-item
+                a(href='#') Blank Page
+
+    .row
+        .col-md-12
+            .tile
+                .tile-body Crear un asombroso panel central

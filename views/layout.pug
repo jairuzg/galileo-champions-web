@@ -1,0 +1,39 @@
+doctype html
+html(lang="en")
+
+    //- Variables to set active page in sidebar
+    block variables
+        - var activePage = 'dashboard';
+        - var activeGroup = 'none';
+
+    head
+        meta(name="description", content="Esta es el galileo champions, un lugar donde puedes canjear puntos por premios en la universidad Galileo ")
+
+        block title
+            title Galileo Admin - No paras de ganar
+
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+
+        // Main CSS
+        link(rel='stylesheet', type='text/css', href='css/main.css')
+        // Font-icon css
+        link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+
+    body.app.sidebar-mini
+
+        // Navbar
+        include includes/_header.pug
+
+        // Sidebar menu
+        include includes/_sidebar.pug
+
+        main.app-content
+            block content
+
+        //- Javascripts
+        include includes/_javascript.pug
+
+        // Page specific javascripts
+        block specific-js
