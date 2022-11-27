@@ -20,7 +20,7 @@ html
             div(class='logo')
                 h1 Galileo Champions
             .container-fluid
-                form
+                form(class='form', method='POST')
                     .row
                         .col-md-2.col-lg-4
                         .col-md-8.col-lg-4
@@ -28,7 +28,15 @@ html
                                 .tile-header
                                     h2 Galileo Rockstar
                                 .tile-body
+                                    if errors && errors.length
+                                        .bs-component
+                                            .alert.alert-danger
+                                                each error in errors
+                                                    .strong Oops, al parecer encontramos unos errores al tratar de guardar tu voto!
+                                                        ul
+                                                            li=error.msg || error
                                     .form-group Nominacion del Galileo Rockstar consiste en nominar a algun estudiante del cual hayas recibido apoyo o que ha influido positivamente en tu trayecto academico.
+                                    .small.alert-link Actualmente votando como #{voterEmail} , el periodo de votación finaliza en la fecha #{rockstarPeriod.periodTo}
                         .col-md-2.col-lg-4
                     .row
                         .col-md-2.col-lg-4
@@ -38,7 +46,9 @@ html
                                     h3.tile-title Escoge el correo de la persona que estas nominando
                                 .tile-body
                                     .form-group
-                                        select(class='form-control', id='nominatedSelect', multiple='')
+                                        input(type='hidden', name='voterEmail', value=voterEmail)
+                                        input(type='hidden', name='_csrf', value=csrfToken)
+                                        select(class='form-control', id='nominatedSelect', name='nominatedEmail', required)
                         .col-md-2.col-lg-4
                     .row
                         .col-md-2.col-lg-4
@@ -48,17 +58,7 @@ html
                                     h3.tile-title ¿Qué te llevó a votar por esta persona, cuál es el motivo por el cual nominas a esta persona?
                                 .tile-body
                                     .form-group
-                                        textarea.form-control
-                        .col-md-2.col-lg-4
-                    .row
-                        .col-md-2.col-lg-4
-                        .col-md-8.col-lg-4
-                            .tile
-                                .tile-header
-                                    h3.tile-title ¿De qué manera influye en tu carrera contar con el apoyo de esta persona o de cualquier otro estudiante?
-                                .tile-body
-                                    .form-group
-                                        textarea.form-control
+                                        textarea(class='form-control', name='reasonToNominate', required)
                         .col-md-2.col-lg-4
                     .row
                         .col-md-2.col-lg-4
@@ -67,7 +67,7 @@ html
                                 .col-md-6.text-left
                                     button.btn.btn-primary.btn-lg Enviar
                                 .col-md-6.text-right
-                                    button.btn.btn-lg.btn-light Borrar formulario
+                                    button(class='btn btn-lg btn-light', type='reset', onclick='clearSel2Control()') Borrar formulario
                         .col-md-2.col-lg-4
                     .row
                         .col-md-2.col-lg-4
@@ -81,17 +81,17 @@ html
         script.
             const backendUrl = '#{backendUrl}';
             $('#nominatedSelect').select2({
-                multiple: false,
+                // multiple: false,
                 ajax: {
                     url: `${backendUrl}/api/students/search`,
                     dataType: 'json',
-                    data: function(params) {
+                    data: function (params) {
                         let query = {
                             criteria: params.term
                         }
                         return query;
                     },
-                    processResults: function(data){
+                    processResults: function (data) {
                         const items = data.students.map(student => {
                             return {
                                 id: student.email,
@@ -104,3 +104,7 @@ html
                     }
                 }
             });
+
+            function clearSel2Control() {
+                $("#nominatedSelect").val("").trigger("change");
+            }

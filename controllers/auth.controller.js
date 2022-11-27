@@ -11,7 +11,6 @@ const {TRANSLATION_LANG} = require("../config/app_config");
 const appUtils = require("../common/utils");
 
 authRouter.get('/login', (req, res) => {
-    console.log("en el login ", req.query, req.session);
     if (req.session.messages) {
         req.flash('errors', req.session.messages);
     }
@@ -24,7 +23,6 @@ authRouter.post('/login',
     param('redirectUrl').isString().optional(),
     param('failureRedirectUrl').isString().optional(),
     (req, res, next) => {
-        console.log("ENTRE EN EL POST DEL LOGIN");
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             req.flash("errors", errors.errors);
@@ -136,54 +134,36 @@ authRouter.get('/login/google', (req, res, next) => {
 });
 
 authRouter.get('/login/google/callback', function (req, res, next) {
-    /* look at the 2nd parameter to the below call */
-    passport.authenticate('google', {
-        failureMessage: true,
-        failureFlash: true
-    }, function (err, user, info) {
-        console.log(req.session);
-        if (err) {
-            return next(err);
-        }
-        if (info) {
-            console.log(info);
-        }
-        if (!user) {
-            return res.redirect('/login');
-        }
-        req.logIn(user, function (err) {
+        passport.authenticate('google', {
+            failureRedirectUrl: req.session.failureRedirectUrl ? req.session.failureRedirectUrl : '/login',
+            hostedDomain: 'galileo.edu',
+            failureMessage: true,
+            failureMessages: true,
+            failureFlash: true,
+            passReqToCallback: true
+        }, function (err, user, info) {
+            const failureRedirectUrl = req.session.failureRedirectUrl ? req.session.failureRedirectUrl : '/login';
+            const successRedirectUrl = req.session.redirectUrl ? req.session.redirectUrl : '/';
+            delete req.session.redirectUrl;
+            delete req.session.failureRedirectUrl;
+
             if (err) {
                 return next(err);
             }
-            return res.redirect('/users/' + user.username);
-        });
-    })(req, res, next);
-});
+            if (info && !user) {
+                req.flash("error", info.message);
+                return res.redirect(failureRedirectUrl);
+            }
 
-// authRouter.get('/login/google/callback',function (req, res, next){
-//         passport.authenticate('google', {
-//             failureRedirectUrl: '/login',
-//             hostedDomain: 'galileo.edu',
-//             failureMessage: true,
-//             failureFlash: true,
-//             passReqToCallback: true
-//         }, (err, user, info) => {
-//             console.log(err, user, info, this);
-//             req.logIn(user, function(erro) {
-//                 console.log(erro);
-//             })
-//         })(req, res, next);
-//     }
-//     ,
-//     (req, res) => {
-//         let state = {};
-//         if (req.query.state) {
-//             state = appUtils.parseStateVariables(req.query.state);
-//         }
-//         console.log("ok y que paso con state?", req.query, req.session);
-//         res.redirect(state.redirectUrl ? state.redirectUrl : '/');
-//     }
-// );
+            req.login(user, function (err2) {
+                if (err2) {
+                    return res.redirect(failureRedirectUrl);
+                } else return res.redirect(successRedirectUrl);
+            });
+
+        })(req, res, next);
+    }
+);
 
 authRouter.get('/logout', (req, res) => {
     req.session.destroy()
@@ -266,8 +246,6 @@ authRouter.get('/reset-password-success', (req, res) => {
 });
 
 authRouter.get('/reset-password-error', (req, res) => {
-    console.log('dentro de reset password error', req.session);
-    console.log('flash errors ', req.flash("errors"))
     res.render('auth/reset-password-link-error');
 });
 

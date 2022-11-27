@@ -1,30 +1,41 @@
-const {BACKEND_URL, TRANSLATION_LANG} = require("../../config/app_config");
+const {BACKEND_URL, TRANSLATION_LANG, BACKEND_CONF, JWT_SECRET_KEY} = require("../../config/app_config");
 const axios = require("axios");
 const {HTTP_STATUS} = require("../../config/constants");
 const localStrategy = require('passport-local').Strategy;
 const {translate} = require('./../../common/utils');
+const jwt = require('jsonwebtoken');
+const axiosInstance = require("axios");
 
 module.exports = (passport) => {
     passport.use(new localStrategy({usernameField: 'email'}, (email, password, done) => {
         const payload = {
-            email: email,
-            password: password
-        }
-        axios.post(`${BACKEND_URL}/api/auth/login-web`, payload).then(loginResp => {
+            username: email,
+            password: password,
+            client_id: BACKEND_CONF.CLIENT_ID,
+            client_secret: BACKEND_CONF.CLIENT_SECRET,
+            grant_type: 'password'
+        };
+        axios.post(`${BACKEND_URL}/api/auth/login`, payload).then(loginResp => {
             if (loginResp.status === HTTP_STATUS.OK) {
-                let user = loginResp.data.data;
+                let authorization = loginResp.data;
+                const accessToken = authorization['access_token'];
+                const user = jwt.verify(accessToken, JWT_SECRET_KEY);
                 delete user.password;
+                user.accessToken = accessToken;
+                axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
                 return done(null, user);
             }
         }).catch(err => {
-            let errorMessage = err.response.data.message;
-            translate(err.response.data.message, TRANSLATION_LANG).then(text => {
-                console.log("tradujo un error",text);
-                errorMessage = text;
+            const errorData = err.response ? err.response.data : {
+                message: err.message,
+                code: HTTP_STATUS.INTERNAL_SERVER_ERROR
+            };
+            translate(errorData.message, TRANSLATION_LANG).then(text => {
+                errorData.message = text;
             }).catch(e => {
                 console.log("Error al intentar traducir ", e);
             }).finally(() => {
-                return done(null, false, {message: errorMessage});
+                return done(null, false, errorData);
             });
         });
     }));

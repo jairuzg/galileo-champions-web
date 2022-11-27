@@ -29,7 +29,7 @@ app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.session = req.session;
-    res.locals.error = req.flash('error');
+    res.locals.error = req.flash('error') || req.session.error;
     res.locals.errors = req.flash('errors');
     next();
 });

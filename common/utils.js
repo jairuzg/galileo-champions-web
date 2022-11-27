@@ -24,7 +24,6 @@ const parseStateVariables = (unparsedString) => {
         let varPairArray = varPair.split(':');
         convertedObject[varPairArray[0]] = varPairArray[1];
     });
-    console.log('the var pairs ', convertedObject);
     return convertedObject;
 };
 

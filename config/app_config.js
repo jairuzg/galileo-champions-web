@@ -1,6 +1,8 @@
 const env = require('dotenv');
 env.config();
 
+const axiosInstance = require('axios');
+
 module.exports = {
     HOST_URL: process.env.HOST_URL,
     BACKEND_URL: process.env.BACKEND_URL,
@@ -13,5 +15,8 @@ module.exports = {
         API_KEY: process.env.BACKEND_API_KEY
     },
     ALLOWED_G_DOMAIN: process.env.ALLOWED_G_LOGIN_DOMAIN,
-    TRANSLATION_LANG: process.env.TRANSLATION_LANG
+    TRANSLATION_LANG: process.env.TRANSLATION_LANG,
+    JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+    TOKEN_HEADER_KEY: process.env.TOKEN_HEADER_KEY,
+    axiosInstance: axiosInstance
 };

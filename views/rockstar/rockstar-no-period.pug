@@ -28,16 +28,7 @@ html
                                 .tile-header
                                     h2 Nominaciones Galileo Rockstar
                                 .tile-body
-                                    if error && error != ""
-                                        .bs-component
-                                            div(class='alert alert-dismissible alert-danger')
-                                                button(class='close', type='button', data-dismiss='alert') x
-                                                strong=error
-                                    .form-group Para continuar es necesario que te loguees con tu cuenta de Google, recuerda usar tu cuenta de la universidad (i.e: usuario@galileo.edu)
-                                    .form-group
-                                        .btn-container
-                                            a(class='btn btn-outline-dark btn-block', href='/login/google?redirectUrl=/rockstar-form&failureRedirectUrl=/rockstar-form', role='button', style='text-transform:none') Continuar con Google
-                                                img(width='20px', style='margin-bottom:3px; margin-right:5px', alt='Google sign-in', src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png')
+                                    .form-group Oops, actualmente no hay un periodo activo de votaciones para nominar al Rockstar, mantente atento, te estaremos informando cuando el periodo de votaciones esté abierto
                         .col-md-2.col-lg-4
 
         include /includes/_javascript

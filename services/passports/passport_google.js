@@ -24,7 +24,7 @@ module.exports = (passport) => {
         }
         if (googleProfile.hd !== ALLOWED_G_DOMAIN) {
             const wrongDomainError = new Error(`Solo puedes ingresar con tu correo @${ALLOWED_G_DOMAIN}`);
-            wrongDomainError.code=HTTP_STATUS.UNAUTHORIZED;
+            wrongDomainError.code = HTTP_STATUS.UNAUTHORIZED;
             return done(null, false, {message: `Solo puedes ingresar con tu correo @${ALLOWED_G_DOMAIN}`});
         }
         axios.post(`${BACKEND_CONF.BASE_URL}/api/user-exists`, {email: user.email}, {
@@ -35,14 +35,14 @@ module.exports = (passport) => {
             if (checkResp.status === HTTP_STATUS.OK) return done(null, user);
             else return done(null, false, checkResp.data.data.message);
         }).catch(ex => {
-            if (ex.response.status === HTTP_STATUS.NOT_FOUND) {
+            if (ex.response && ex.response.status === HTTP_STATUS.NOT_FOUND) {
                 axios.post(`${BACKEND_URL}/api/auth/register`, user).then(registerResp => {
                     if (registerResp.status === HTTP_STATUS.OK) return done(null, user, {otto: 'QUEPEDO'});
                     else return done(null, false, {message: registerResp.data.data.message});
                 }).catch(exr => {
                     return (null, false, {message: exr.response.data.message || exr.message || exr.toString()});
                 });
-            } else return done(null, false, {message: ex.response.data.message || ex.message || ex.toString()})
+            } else return done(null, false, {message: ex.response ? ex.response.data.message : ex.message || ex.toString()})
         });
     }));
 

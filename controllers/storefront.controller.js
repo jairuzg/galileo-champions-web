@@ -2,7 +2,7 @@ const express = require('express');
 const storefrontRouter = express.Router();
 const {isAuth} = require("./helpers.controller");
 
-storefrontRouter.get('/', function (req, res) {
+storefrontRouter.get('/', isAuth, function (req, res) {
     res.render('storefront/index');
 });
 
