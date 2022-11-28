@@ -61,7 +61,7 @@ html
                             a(class='btn btn-primary btn-block', href='/register') Registro manual
                                 i(class='fa fa-sign-in fa-lg fa-fw')
 
-                form(class='forget-form', action='/reset-password-link', method='POST')
+                form(class='forget-form', action='/reset-password-link', method='POST', id='forgetPasswordForm')
                     input(type='hidden', name='_csrf', value=csrfToken)
                     h3(class='login-head')
                         i(class='fa fa-lg fa-fw fa-lock')
@@ -88,6 +88,10 @@ html
             $('.login-content [data-toggle="flip"]').click(function () {
                 $('.login-box').toggleClass('flipped');
                 return false;
+            });
+
+            $("#forgetPasswordForm").submit(() => {
+                $('#forgetPasswordForm button').attr("disabled", true);
             });
 
             function disableLoginForm() {
