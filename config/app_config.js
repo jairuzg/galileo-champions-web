@@ -10,6 +10,7 @@ module.exports = {
         BASE_URL: process.env.BACKEND_URL,
         ADMIN_USERNAME: process.env.BACKEND_ADMIN_USERNAME,
         ADMIN_PASSWD: process.env.BACKEND_ADMIN_PASSWORD,
+        ADMIN_TOKEN: process.env.BACKEND_ADMIN_TOKEN,
         CLIENT_ID: process.env.BACKEND_CLIENT_ID,
         CLIENT_SECRET: process.env.BACKEND_CLIENT_SECRET,
         API_KEY: process.env.BACKEND_API_KEY

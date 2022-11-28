@@ -33,7 +33,7 @@ module.exports = (passport) => {
             translate(errorData.message, TRANSLATION_LANG).then(text => {
                 errorData.message = text;
             }).catch(e => {
-                console.log("Error al intentar traducir ", e);
+                console.error("Error al intentar traducir ", e);
             }).finally(() => {
                 return done(null, false, errorData);
             });

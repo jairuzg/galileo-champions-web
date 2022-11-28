@@ -70,7 +70,7 @@ authRouter.get('/confirm-account/:token',
                     translate(confirmResp.err.message, TRANSLATION_LANG).then(text => {
                         req.flash('errors', [text]);
                     }).catch(te => {
-                        console.log(te.message);
+                        console.error(te.message);
                         req.flash('errors', [confirmResp.err.message]);
                     }).finally(() => {
                         res.redirect('/account-confirm-error')
@@ -99,7 +99,7 @@ authRouter.post('/register',
                     translate(registerResp.error.message, TRANSLATION_LANG).then(text => {
                         req.flash('errors', [text]);
                     }).catch(ex => {
-                        console.log("Ocurrio un error al tratar de traducir el texto de error. ", ex.message);
+                        console.error("Ocurrio un error al tratar de traducir el texto de error. ", ex.message);
                         req.flash('errors', [registerResp.error.message]);
                     }).finally(() => {
                         res.redirect('/register');

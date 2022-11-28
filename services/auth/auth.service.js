@@ -1,7 +1,8 @@
 const axios = require("axios");
-const {BACKEND_CONF, TRANSLATION_LANG} = require("../../config/app_config");
+const {BACKEND_CONF, TRANSLATION_LANG, JWT_SECRET_KEY} = require("../../config/app_config");
 const {HTTP_STATUS} = require("../../config/constants");
 const {translate} = require('./../../common/utils');
+const jwt = require("jsonwebtoken");
 
 const confirmAccount = async (token) => {
     let err, isAccountValidated;
@@ -72,10 +73,25 @@ const resetPasswordByToken = async (password, token) => {
     return {error, isPasswordReset};
 }
 
+const checkRequiredPermissions = (requiredPermissions) => {
+    return (req, res, next) => {
+        const role = req.user.role;
+
+        const hasPermissions = requiredPermissions.includes(role);
+
+        if (!hasPermissions) {
+            return res.render('auth/page-403');
+        } else {
+            return next();
+        }
+    };
+};
+
 module.exports = {
     confirmAccount: confirmAccount,
     registerStudent: registerStudent,
     submitResetPasswordRequest: submitResetPasswordRequest,
     askTokenValidity: askTokenValidity,
-    resetPasswordByToken: resetPasswordByToken
+    resetPasswordByToken: resetPasswordByToken,
+    checkRequiredPermissions: checkRequiredPermissions
 };

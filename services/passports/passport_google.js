@@ -1,9 +1,11 @@
 const googleCredentials = require('../../config/googleCredentialsLocal.json');
 const appConfig = require("../../config/app_config");
 const axios = require("axios");
-const {BACKEND_URL, BACKEND_CONF, ALLOWED_G_DOMAIN} = require("../../config/app_config");
+const {BACKEND_URL, BACKEND_CONF, ALLOWED_G_DOMAIN, TRANSLATION_LANG} = require("../../config/app_config");
 const googleStrategy = require('passport-google-oauth20').Strategy;
 const {GOOGLE_PROVIDER, STUDENT_ROLE, HTTP_STATUS} = require('../../config/constants');
+const axiosInstance = require("axios");
+const {translate} = require('./../../common/utils');
 
 module.exports = (passport) => {
     passport.use(new googleStrategy({
@@ -32,15 +34,30 @@ module.exports = (passport) => {
                 'X-GC-API-KEY': BACKEND_CONF.API_KEY
             }
         }).then(checkResp => {
-            if (checkResp.status === HTTP_STATUS.OK) return done(null, user);
-            else return done(null, false, checkResp.data.data.message);
+            if (checkResp.status === HTTP_STATUS.OK) {
+                axios.get(`${BACKEND_CONF.BASE_URL}/api/user/${user.email}`, {
+                    headers: {
+                        'Authorization': `Bearer ${BACKEND_CONF.ADMIN_TOKEN}`
+                    }
+                }).then(userByEmailResp => {
+                    const userByEmail = userByEmailResp.data.data;
+                    if (userByEmail.accessToken) axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${userByEmail.accessToken}`;
+                    if (userByEmailResp.status === HTTP_STATUS.OK) return done(null, userByEmail);
+                }).catch(async (ex) => {
+                    const errorData = ex.response ? ex.response.data : {message: ex.message};
+                    const text = await translate(errorData.message, TRANSLATION_LANG);
+                    errorData.message = text ? text : errorData.message;
+                    return done(null, false, {message: errorData.message});
+                });
+            } else return done(null, false, checkResp.data.data.message);
         }).catch(ex => {
             if (ex.response && ex.response.status === HTTP_STATUS.NOT_FOUND) {
-                axios.post(`${BACKEND_URL}/api/auth/register`, user).then(registerResp => {
-                    if (registerResp.status === HTTP_STATUS.OK) return done(null, user, {otto: 'QUEPEDO'});
+                axios.post(`${BACKEND_URL}/api/auth/register-web`, user).then(registerResp => {
+                    if (registerResp.data.data.accessToken) axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${registerResp.data.data.accessToken}`;
+                    if (registerResp.status === HTTP_STATUS.OK) return done(null, registerResp.data.data.email ? registerResp.data.data : user);
                     else return done(null, false, {message: registerResp.data.data.message});
                 }).catch(exr => {
-                    return (null, false, {message: exr.response.data.message || exr.message || exr.toString()});
+                    return done(null, false, {message: exr.response.data.message || exr.message || exr.toString()});
                 });
             } else return done(null, false, {message: ex.response ? ex.response.data.message : ex.message || ex.toString()})
         });

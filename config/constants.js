@@ -10,5 +10,7 @@ module.exports = {
     },
     GOOGLE_PROVIDER: 'google',
     EMAIL_PROVIDER: 'email',
-    STUDENT_ROLE: 1
+    STUDENT_ROLE: 1,
+    LECTURER_ROLE: 2,
+    ADMIN_ROLE: 3
 }

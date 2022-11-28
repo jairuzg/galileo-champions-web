@@ -36,7 +36,23 @@ const saveRockstarFormData = async (rockstarForm) => {
     return {error, isFormStored};
 };
 
+const checkIfUserCanVote = async () => {
+    let error, userCanVote;
+    try {
+        await axiosInstance.get(`${BACKEND_CONF.BASE_URL}/api/rockstar/voter-can-vote`).then(verifyResp => {
+            if (verifyResp.status === HTTP_STATUS.OK) userCanVote = true;
+        });
+    } catch (ex) {
+        const errorData = ex.response ? ex.response.data : {message: ex.message};
+        const text = await translate(errorData.message, TRANSLATION_LANG);
+        errorData.message = text ? text : errorData.message;
+        error = errorData;
+    }
+    return {error, userCanVote};
+}
+
 module.exports = {
     getCurrentRockstarPeriod: getCurrentRockstarPeriod,
-    saveRockstarFormData: saveRockstarFormData
+    saveRockstarFormData: saveRockstarFormData,
+    checkIfUserCanVote: checkIfUserCanVote
 };

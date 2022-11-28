@@ -15,14 +15,16 @@ html
             div(class='logo')
                 h1 Galileo Champions
             .tile
-                h3(class='tile-title') Registro fallido
+                h3(class='tile-title') Galileo Rockstar
                 .tile-body
                     .bs-component
                         .alert.alert-danger
-                            .strong Oops, al parecer encontramos unos errores al tratar de guardar tu voto!
+                            .strong Oops, ocurrio un error
                             if errors && errors.length
                                 each error in errors
                                     ul
                                         li=error.msg || error
+                            if error != ""
+                                strong=error
 
         include /includes/_javascript

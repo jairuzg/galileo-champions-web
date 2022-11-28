@@ -30,7 +30,7 @@ html
                         div(class='alert alert-dismissible alert-danger')
                             button(class='close', type='button', data-dismiss='alert') x
                             strong=error || session.messages
-                form(class='login-form', action='/login', method='POST')
+                form(class='login-form', action='/login', method='POST', id='loginForm')
                     input(type='hidden', name='_csrf', value=csrfToken)
                     h3(class='login-head') LOGIN
                         i(class='fa fa-lg fa-fw fa-user')
@@ -54,11 +54,11 @@ html
                                 i(class='fa fa-sign-in fa-lg fa-fw')
                     div(class='form-group')
                         .btn-container
-                            a(class='btn btn-outline-dark btn-block', href='/login/google', role='button', style='text-transform:none') Registro/Login con Google
+                            button(class='btn btn-outline-dark btn-block', onclick="location.href = '/login/google';", role='button', style='text-transform:none', type='button') Registro/Login con Google
                                 img(width='20px', style='margin-bottom:3px; margin-right:5px', alt='Google sign-in', src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png')
                     div(class='form-group')
                         .btn-container
-                            button(class='btn btn-primary btn-block') Registro manual
+                            a(class='btn btn-primary btn-block', href='/register') Registro manual
                                 i(class='fa fa-sign-in fa-lg fa-fw')
 
                 form(class='forget-form', action='/reset-password-link', method='POST')
@@ -80,8 +80,16 @@ html
         include /includes/_javascript
 
         script(type='text/javascript').
+
+            $("#loginForm").submit(()=>{
+                $('#loginForm button').attr("disabled",true);
+            });
             // Login Page Flipbox control
             $('.login-content [data-toggle="flip"]').click(function () {
                 $('.login-box').toggleClass('flipped');
                 return false;
             });
+
+            function disableLoginForm() {
+                $('#loginForm button').attr("disabled",true);
+            }

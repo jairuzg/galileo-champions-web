@@ -7,6 +7,7 @@ const csrf = require('csurf');
 const cookieParser = require("cookie-parser");
 const flash = require('connect-flash');
 const app = express();
+const {notFoundHandler, errorHandler} = require("./controllers/helpers.controller");
 
 app.set("views", path.join(__dirname, "/views"));
 app.locals.basedir = path.join(__dirname, 'views');
@@ -41,8 +42,12 @@ const {rockstarRouter} = require("./controllers/rockstar.controller");
 app.use(authRouter);
 app.use(storefrontRouter);
 app.use(rockstarRouter);
+app.use(function (req, res, next) {
+    notFoundHandler(req, res, next);
+});
+app.use(errorHandler());
 
 const applicationPort = 3000;
 app.listen(applicationPort, () => {
-    console.log("Running Galileo-Champions backend in port  ", applicationPort);
+    console.info("Running Galileo-Champions backend in port  ", applicationPort);
 })

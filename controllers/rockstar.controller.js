@@ -14,9 +14,15 @@ rockstarRouter.get('/rockstar-form', (req, res, next) => {
         args.voterEmail = req.user.email;
         rockstarFormService.getCurrentRockstarPeriod().then(periodResp => {
             if (!periodResp.error) {
-                args.rockstarPeriod = periodResp.rockstarPeriod;
-                args.csrfToken = req.csrfToken();
-                return res.render('rockstar/rockstar-form', args);
+                rockstarFormService.checkIfUserCanVote().then(verifyResp => {
+                    if (verifyResp.error) {
+                        res.render("rockstar/rockstar-form-error", {error: verifyResp.error.message});
+                    } else {
+                        args.rockstarPeriod = periodResp.rockstarPeriod;
+                        args.csrfToken = req.csrfToken();
+                        return res.render('rockstar/rockstar-form', args);
+                    }
+                });
             } else return res.render('rockstar/rockstar-no-period');
         });
     }

@@ -24,7 +24,7 @@ html
                                 each error in errors
                                     li=error.msg || error
                 h3(class='tile-title') Registro
-                form(class='form-horizontal', method='POST', action='/register')
+                form(class='form-horizontal', method='POST', action='/register', id='registerForm')
                     .tile-body
                         input(type='hidden', name='_csrf', value=csrfToken)
                         input(type='hidden', name='provider', value=provider)
@@ -55,7 +55,13 @@ html
                                 button(class='btn btn-primary', type='submit') Register
                                     i.fa.fa-fw.fa-lg.fa-check-circle
                                 span &nbsp;&nbsp;
-                                a(class='btn btn-secondary', href='#') Cancel
+                                a(class='btn btn-secondary', href='/') Cancel
                                     i.fa.fa-fw.fa-lg.fa-times-circle
 
         include /includes/_javascript
+
+        script(type='text/javascript').
+
+            $("#registerForm").submit(() => {
+                $('#registerForm button').attr("disabled", true);
+            });
