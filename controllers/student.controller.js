@@ -33,7 +33,7 @@ studentRouter.get("/student/champion-points", isAuth, checkRequiredPermissions([
             responseOptions.championPoints = sumResp.championPoints;
         }
     }).finally(() => {
-        if (!responseOptions.championPoints) return res.redirect("/student");
+        if (!responseOptions.championPoints || !responseOptions.championPoints.length) return res.redirect("/student");
         return res.render("student/champion_points/student_champion_points", responseOptions);
     });
 });
@@ -66,10 +66,13 @@ studentRouter.get("/student/champion-points/:id",
 studentRouter.get("/student/rockstar-summary", isAuth, checkRequiredPermissions([STUDENT_ROLE]),
     (req, res) => {
         rockstarService.getStudentRockstarInfo().then(rockstarResp => {
+            const responseOptions = {
+                user: req.user
+            };
             if (rockstarResp.error) {
-                req.flash("errors", rockstarResp.error.message);
+                responseOptions.errors = rockstarResp.error.message;
             }
-            return res.render("student/rockstar/student_rockstar_summary", {user: req.user});
+            return res.render("student/rockstar/student_rockstar_summary", responseOptions);
         });
     });
 

@@ -39,6 +39,8 @@ const transferRockstarPrizeToRedemptionCenter = async (championPointsRequest) =>
             if (summaryResp.error) error = summaryResp.error;
             isTransferred = true;
         }
+    }).catch(async ex => {
+        error = await serviceUtils.getErrorDataFromExceptionOrResponse(ex);
     });
     return {error, isTransferred};
 };
@@ -48,7 +50,7 @@ const getStudentRockstarInfo = async () => {
     await axiosInstance.get(`${BACKEND_CONF.BASE_URL}/api/rockstar/student/rockstar-info`).then(rockstarResp => {
         if (rockstarResp === HTTP_STATUS.OK) isStudentRockstar = true;
     }).catch(async ex => {
-        error = serviceUtils.getErrorDataFromExceptionOrResponse(ex);
+        error = await serviceUtils.getErrorDataFromExceptionOrResponse(ex);
     });
     return {error, isStudentRockstar};
 };
