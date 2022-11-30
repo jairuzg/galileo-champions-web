@@ -25,7 +25,7 @@ block content
         .col-md-8
             .tile
                 .tile-header.text-center
-                    if championPointsSum
+                    if championPointsSum !== undefined && championPointsSum.championPoints > 0
                         .tile-title Vaya al parecer cuentas con #{championPointsSum.championPoints} acumulados, , muy bien, sigue asi!
                             .row
                                 .col-md-2
