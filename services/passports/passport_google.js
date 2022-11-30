@@ -6,8 +6,11 @@ const googleStrategy = require('passport-google-oauth20').Strategy;
 const {GOOGLE_PROVIDER, STUDENT_ROLE, HTTP_STATUS} = require('../../config/constants');
 const axiosInstance = require("axios");
 const {translate} = require('./../../common/utils');
+const appUtils = require("../../common/utils");
+const {localStorage} = require("../../common/utils");
 
 module.exports = (passport) => {
+    appUtils.localStorage.clear();
     passport.use(new googleStrategy({
         clientID: googleCredentials.web.client_id,
         clientSecret: googleCredentials.web.client_secret,
@@ -24,6 +27,7 @@ module.exports = (passport) => {
             provider: GOOGLE_PROVIDER,
             role: STUDENT_ROLE
         }
+        localStorage.set("passportId", user.email);
         if (googleProfile.hd !== ALLOWED_G_DOMAIN) {
             const wrongDomainError = new Error(`Solo puedes ingresar con tu correo @${ALLOWED_G_DOMAIN}`);
             wrongDomainError.code = HTTP_STATUS.UNAUTHORIZED;

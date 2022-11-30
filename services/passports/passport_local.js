@@ -5,9 +5,12 @@ const localStrategy = require('passport-local').Strategy;
 const {translate} = require('./../../common/utils');
 const jwt = require('jsonwebtoken');
 const axiosInstance = require("axios");
+const appUtils = require("../../common/utils");
 
 module.exports = (passport) => {
     passport.use(new localStrategy({usernameField: 'email'}, (email, password, done) => {
+        appUtils.localStorage.clear();
+        appUtils.localStorage.set("passportId", email);
         const payload = {
             username: email,
             password: password,

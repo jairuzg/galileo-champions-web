@@ -1,5 +1,5 @@
 const axios = require("axios");
-const {BACKEND_CONF, TRANSLATION_LANG, JWT_SECRET_KEY} = require("../../config/app_config");
+const {BACKEND_CONF, TRANSLATION_LANG, JWT_SECRET_KEY, axiosInstance} = require("../../config/app_config");
 const {HTTP_STATUS} = require("../../config/constants");
 const {translate} = require('./../../common/utils');
 const jwt = require("jsonwebtoken");
@@ -75,17 +75,33 @@ const resetPasswordByToken = async (password, token) => {
 
 const checkRequiredPermissions = (requiredPermissions) => {
     return (req, res, next) => {
-        const role = req.user.role;
+        if (req.isAuthenticated) {
+            const role = req.user.role;
 
-        const hasPermissions = requiredPermissions.includes(role);
+            const hasPermissions = requiredPermissions.includes(role);
 
-        if (!hasPermissions) {
-            return res.render('auth/page-403');
-        } else {
-            return next();
+            if (!hasPermissions) {
+                return res.render('auth/page-403');
+            } else {
+                return next();
+            }
         }
+        next();
     };
 };
+
+const changeUserPassword = async (email, password) => {
+    let error, isPasswordChanged;
+    await axiosInstance.post(`${BACKEND_CONF.BASE_URL}/api/auth/change-password`, {email,password}).then(changeResp => {
+        if(changeResp.status === HTTP_STATUS.OK) isPasswordChanged = true;
+    }).catch(async ex => {
+        const exData = ex.response.data;
+        const text = await translate(exData.message, TRANSLATION_LANG);
+        exData.message = text ? text : exData.message;
+        error = exData;
+    });
+    return {error, isPasswordChanged};
+}
 
 module.exports = {
     confirmAccount: confirmAccount,
@@ -93,5 +109,6 @@ module.exports = {
     submitResetPasswordRequest: submitResetPasswordRequest,
     askTokenValidity: askTokenValidity,
     resetPasswordByToken: resetPasswordByToken,
-    checkRequiredPermissions: checkRequiredPermissions
+    checkRequiredPermissions: checkRequiredPermissions,
+    changeUserPassword: changeUserPassword
 };

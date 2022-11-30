@@ -19,5 +19,6 @@ module.exports = {
     TRANSLATION_LANG: process.env.TRANSLATION_LANG,
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     TOKEN_HEADER_KEY: process.env.TOKEN_HEADER_KEY,
-    axiosInstance: axiosInstance
+    axiosInstance: axiosInstance,
+    PASSPORT_ID: ''
 };

@@ -26,5 +26,8 @@ html
                                         li=error.msg || error
                             if error != ""
                                 strong=error
+                                br
+                                strong
+                                    a(href="/logout", class="alert-link") Salir del sistema
 
         include /includes/_javascript

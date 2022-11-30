@@ -2626,7 +2626,7 @@ fieldset:disabled a.btn {
 .btn-primary:hover {
   color: #FFF;
   background-color: #007065;
-  border-color: #00635a;
+  border-color: #C2185B;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -2643,7 +2643,7 @@ fieldset:disabled a.btn {
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #C2185B;
   border-color: #00564e;
 }
 
@@ -5342,7 +5342,7 @@ a.badge:hover, a.badge:focus {
 
 a.badge-primary:hover, a.badge-primary:focus {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #C2185B;
 }
 
 a.badge-primary:focus, a.badge-primary.focus {
@@ -6973,7 +6973,7 @@ a.close.disabled {
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
 button.bg-primary:focus {
-  background-color: #00635a !important;
+  background-color: #C2185B !important;
 }
 
 .bg-secondary {
@@ -11441,7 +11441,7 @@ fieldset[disabled] .datepicker table tr td.selected.highlighted.focus {
 .datepicker table tr td.active.highlighted:hover {
   color: #ffffff;
   background-color: #304FFE;
-  border-color: #007d71;
+  border-color: #304FFE;
 }
 
 .datepicker table tr td.active:active,
@@ -11452,7 +11452,7 @@ fieldset[disabled] .datepicker table tr td.selected.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td.active.highlighted {
   color: #ffffff;
   background-color: #304FFE;
-  border-color: #007d71;
+  border-color: #304FFE;
 }
 
 .datepicker table tr td.active:active:hover,
@@ -11474,7 +11474,7 @@ fieldset[disabled] .datepicker table tr td.selected.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td.active.focus,
 .open > .dropdown-toggle.datepicker table tr td.active.highlighted.focus {
   color: #ffffff;
-  background-color: #007d71;
+  background-color: #304FFE;
   border-color: #193c5a;
 }
 
@@ -11560,7 +11560,7 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .datepicker table tr td span.active.disabled:hover:hover {
   color: #ffffff;
   background-color: #304FFE;
-  border-color: #007d71;
+  border-color: #304FFE;
 }
 
 .datepicker table tr td span.active:active,
@@ -11577,7 +11577,7 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td span.active.disabled:hover {
   color: #ffffff;
   background-color: #304FFE;
-  border-color: #007d71;
+  border-color: #304FFE;
 }
 
 .datepicker table tr td span.active:active:hover,
@@ -11617,7 +11617,7 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td span.active.disabled.focus,
 .open > .dropdown-toggle.datepicker table tr td span.active.disabled:hover.focus {
   color: #ffffff;
-  background-color: #007d71;
+  background-color: #304FFE;
   border-color: #193c5a;
 }
 
@@ -12008,7 +12008,7 @@ body.stop-scrolling {
 }
 
 .sweet-alert button:active {
-  background-color: #00635a;
+  background-color: #C2185B;
 }
 
 .sweet-alert button.cancel {
@@ -14822,12 +14822,12 @@ be a descendant of the grid when it is being dragged.
 
 ::-moz-selection {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #C2185B;
 }
 
 ::selection {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #C2185B;
 }
 
 @media (min-width: 768px) {
@@ -14960,7 +14960,7 @@ be a descendant of the grid when it is being dragged.
             flex: 0 0 auto;
     display: block;
     width: 230px;
-    background-color: #007d71;
+    background-color: #304FFE;
   }
 }
 
@@ -14994,7 +14994,7 @@ be a descendant of the grid when it is being dragged.
 
 .app-sidebar__toggle:focus, .app-sidebar__toggle:hover {
   color: #fff;
-  background-color: #00635a;
+  background-color: #C2185B;
   text-decoration: none;
 }
 
@@ -15161,7 +15161,7 @@ be a descendant of the grid when it is being dragged.
   width: 230px;
   overflow: auto;
   z-index: 10;
-  background-color: #222d32;
+  background-color: #0026CA;
   -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
           box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
   -webkit-transition: left 0.3s ease,
@@ -15256,7 +15256,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
-  background: #0d1214;
+  background: #8C0032;
   border-left-color: #304FFE;
   text-decoration: none;
   color: #fff;
@@ -15278,7 +15278,7 @@ be a descendant of the grid when it is being dragged.
 
 .treeview.is-expanded [data-toggle='treeview'] {
   border-left-color: #304FFE;
-  background: #0d1214;
+  background: #8C0032;
 }
 
 .treeview.is-expanded .treeview-menu {
@@ -15297,7 +15297,7 @@ be a descendant of the grid when it is being dragged.
   -webkit-transition: max-height 0.3s ease;
   -o-transition: max-height 0.3s ease;
   transition: max-height 0.3s ease;
-  background: #2a383e;
+  background: #C2185B;
 }
 
 .treeview-item {
@@ -15313,7 +15313,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .treeview-item.active, .treeview-item:hover, .treeview-item:focus {
-  background: #0d1214;
+  background: #8C0032;
   text-decoration: none;
   color: #fff;
 }
@@ -15376,13 +15376,13 @@ be a descendant of the grid when it is being dragged.
     margin-left: -3px;
     line-height: 1;
     opacity: 0;
-    background: #0d1214;
+    background: #8C0032;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
   }
   .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__item {
     overflow: visible;
-    background: #0d1214;
+    background: #8C0032;
     border-left-color: #304FFE;
     color: #fff;
   }

@@ -1,0 +1,86 @@
+extends /lecturer/layout.pug
+
+block variables
+    - var activePage = 'userProfile';
+
+block title
+    title Portal catedráticos
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-user
+                |  Mi perfil
+            p Ver mis datos y cambiar contraseña
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-user.fa-lg
+            li.breadcrumb-item
+                a(href='#') Mi perfil
+
+    .row.user
+        .col-md-12
+            .profile
+                .info
+                    i.fa.fa-lg.fa-user.fa-3x.mt-5
+                    br
+                    br
+                    h4=user.firstname + " " + user.lastname
+                    p Catedrático
+                .cover-image
+    br
+    .row
+        .col-md-2
+        .col-md-8
+            .row
+                .col-md-2
+                .col-md-8
+                    .tile.user-settings
+                        if errors != "" && errors.length
+                            .bs-component.text-left
+                                .alert.alert-danger.text-left.alert-dismissible
+                                    button(class='close', type='button', data-dismiss='alert') x
+                                    .strong.text-left Oops, al parecer encontramos unos errores al tratar de enviar los puntos!
+                                    each error in errors
+                                        ul
+                                            li=error.msg || error
+                        if message != ""
+                            .bs-component.text-left
+                                .alert.alert-info.text-left.alert-dismissible
+                                    button(class='close', type='button', data-dismiss='alert') x
+                                    .strong.text-left=message
+                        h4.line-head Profile
+                        form(class="form-vertical", id="lecturerProfileForm", method="POST", action="/auth/change-password")
+                            input(type="hidden", name="_csrf", value=csrfToken)
+                            .row.mb-4
+                                .col-md-4
+                                    label Nombres: &nbsp;&nbsp;
+                                    label=user.firstname
+                                .col-md-4
+                                    label Apellidos: &nbsp;&nbsp;
+                                    label=user.lastname
+                            .row
+                                .col-md-8.mb-4
+                                    label Email: &nbsp;&nbsp;
+                                    label=user.email
+                                .col-md-8.mb-4
+                                    label Password &nbsp;
+                                    input(type="password", name="password")
+                            .row.mb-10
+                                .col-md-12
+                                    button(class='btn btn-primary', type="submit")
+                                        i.fa.fa-fw.fa-lg.fa-check-circle
+                                        | Cambiar contraseña
+                .col-md-2
+        .col-md-2
+
+block specific-js
+    script.
+
+        $(document).ready(function () {
+            $("#lecturerProfileForm").submit(function () {
+                $("#lecturerProfileForm button").attr("disabled", true);
+            });
+        });

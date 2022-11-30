@@ -11,6 +11,7 @@ const {TRANSLATION_LANG} = require("../config/app_config");
 const appUtils = require("../common/utils");
 
 authRouter.get('/login', (req, res) => {
+    if (req.isAuthenticated()) return res.redirect("/");
     if (req.session.messages) {
         req.flash('errors', req.session.messages);
     }
@@ -166,6 +167,7 @@ authRouter.get('/login/google/callback', function (req, res, next) {
 );
 
 authRouter.get('/logout', (req, res) => {
+    appUtils.localStorage.clear();
     req.session.destroy()
     req.logout(function (err) {
         res.redirect('/login');
@@ -248,6 +250,26 @@ authRouter.get('/reset-password-success', (req, res) => {
 authRouter.get('/reset-password-error', (req, res) => {
     res.render('auth/reset-password-link-error');
 });
+
+authRouter.post("/auth/change-password",
+    body("password").notEmpty().withMessage("La contraseña no puede estar vacía"),
+    (req, res, next) => {
+        const validation = validationResult(req);
+        if (!validation.isEmpty()) {
+            req.flash("errors", validation.errors);
+            return res.redirect("/lecturer/profile");
+        } else {
+            authService.changeUserPassword(req.user.email, req.body.password).then(changeResp => {
+                if (changeResp.error) {
+                    req.flash("errors", [changeResp.error]);
+                    return res.redirect("/lecturer/profile");
+                } else {
+                    req.flash("message", "Tu contraseña fue actualizada exitosamente");
+                    return res.redirect("/lecturer/profile");
+                }
+            });
+        }
+    });
 
 module.exports = {
     authRouter: authRouter

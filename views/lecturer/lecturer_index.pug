@@ -1,0 +1,43 @@
+extends /lecturer/layout.pug
+
+block variables
+    - var activePage = 'lecturerIndex';
+
+block title
+    title Portal catedráticos
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-hashtag
+                |  Champion Points
+            p Asignación de Champion Points
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-hashtag.fa-lg
+            li.breadcrumb-item
+                a(href='#') Champion Points
+
+    .row
+        if redemptionCenters && redemptionCenters.length
+            each redemptionCenter in redemptionCenters
+                .col-md-6
+                    .tile
+                        .tile-header
+                            .tile-title.text-center Centro de caje: #{redemptionCenter.redemptionCenter}
+                        .tile-body.text-center
+                            a(class='btn btn-light',href='/lecturer/champion-points?lrc=' + redemptionCenter.id + '&redemptionCenter=' + redemptionCenter.redemptionCenter)
+                                i.fa.fa-lg.fa-2x.fa-gears
+                                | Administrar
+        else
+            .col-md-12
+                .tile
+                    .tile-body No tienes centros de canje asignados aun, puedes mandar un correo a <a href="mailto:galileochampions@gmail.com">soporte</a>
+                    | para que puedan asignarte algunos.
+    script.
+
+        function goToRedmptionCenter(redemptionCenter, lecturer, rockstarPeriod) {
+            console.log(redemptionCenter, lecturer, rockstarPeriod);
+        }

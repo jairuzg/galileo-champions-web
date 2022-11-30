@@ -7,27 +7,29 @@ html(lang="en")
         - var activeGroup = 'none';
 
     head
-        meta(name="description", content="Esta es el galileo champions, un lugar donde puedes canjear puntos por premios en la universidad Galileo ")
+        meta(name="description", content="Esta es el sitio administrativo galileo champions, asignacion de puntos, universidad Galileo ")
 
         block title
-            title Galileo Admin - No paras de ganar
+            title Galileo - Portal de catedraticos
 
         meta(charset='utf-8')
         meta(http-equiv='X-UA-Compatible', content='IE=edge')
         meta(name='viewport', content='width=device-width, initial-scale=1')
 
         // Main CSS
-        link(rel='stylesheet', type='text/css', href='css/main.css')
+        link(rel='stylesheet', type='text/css', href='/css/main.css')
         // Font-icon css
         link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+
+        block stylesheets
 
     body.app.sidebar-mini
 
         // Navbar
-        include includes/_header.pug
+        include /includes/_header.pug
 
         // Sidebar menu
-        include includes/_sidebar.pug
+        include /lecturer/includes/lecturer_sidebar.pug
 
         main.app-content
             block content

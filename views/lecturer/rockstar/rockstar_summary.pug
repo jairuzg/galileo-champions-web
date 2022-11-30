@@ -1,0 +1,93 @@
+extends /lecturer/layout.pug
+
+block variables
+    - var activePage = 'rockstarSummary';
+
+block title
+    title Portal catedráticos
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-star
+                |  Galileo Rockstar
+            p Los estudiantes rockstar del periodo
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-star.fa-lg
+            li.breadcrumb-item
+                a(href='#') Galileo Rockstar
+
+    .row
+        .col-md-2
+        .col-md-8
+            if errors != ""
+                .bs-component.text-left
+                    .alert.alert-danger.text-left.alert-dismissible
+                        button(class='close', type='button', data-dismiss='alert') x
+                        .strong.text-left Oops, al parecer encontramos unos errores al tratar de mostrar a los estudiantes Rockstar
+                        each error in errors
+                            ul
+                                li=error.msg || error
+            if rockstarChampions && rockstarChampions.length
+                .row
+                    .col-md-2
+                    .col-md-8
+                        .tile
+                            .tile-header
+                                .tile-title Estudiantes Rockstar del semestre
+                    .col-md-2
+                each rockstarChampion in rockstarChampions
+                    .row
+                        .col-md-2
+                        .col-md-8
+                            .tile
+                                .tile-header
+                                    .row.text-center
+                                        .tile-title.col-md-3
+                                            .i.fa.fa-lg.fa-3x.fa-trophy.mt-3
+                                        .tile-title.col-md-8
+                                            .row=rockstarChampion.student
+                                            .row
+                                                a=rockstarChampion.nominationCount + " votos"
+                                            .row
+                                                if rockstarChampion.redeemed === false
+                                                    form(class="form-vertical form-transfer-rockstar", method="POST", action="/lecturer/transfer-rockstar-prize")
+                                                        input(type="hidden", name="_csrf", value=csrfToken)
+                                                        input(type="hidden", name="student", value=rockstarChampion.student)
+                                                        input(type="hidden", name="rockstarPeriod", value=rockstarChampion.rockstarPeriod)
+                                                        .form-group.row
+                                                            select(name="lrc", class="form-control")
+                                                                each redemptionCenter in redemptionCenters
+                                                                    option(value=redemptionCenter.id)=redemptionCenter.redemptionCenter
+                                                        .form-group.row
+                                                            .btn-container
+                                                                button.btn.btn-info Asignar puntos a centro de canje
+                                                else
+                                                    p.text-left.small El estudiante ya redimió sus puntos
+                                .title-body
+                                    .tile-title
+
+            else
+                .row
+                    .col-md-2
+                    .col-md-8
+                        .tile
+                            .tile-header
+                                .tile-title Estudiantes Rockstar del semestre
+                            .tile-body Aun no hay estudiantes rockstar, quizas las votaciones no han cerrado.
+                    .col-md-2
+
+        .col-md-2
+
+
+block specific-js
+    script.
+        $(document).ready(function () {
+            $(".form-transfer-rockstar").submit(function () {
+                $(".form-transfer-rockstar button").attr("disabled", true);
+            });
+        });
+

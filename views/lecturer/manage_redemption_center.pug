@@ -1,0 +1,126 @@
+extends /lecturer/layout.pug
+
+block variables
+    - var activePage = 'manageRedemptionCenters';
+
+block stylesheets
+    link(rel='stylesheet', href='/css/lecturer/manage_redemption_center.css')
+
+block title
+    title Portal catedráticos
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-hashtag
+                |  Champion Points
+            p Asignación de Champion Points
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-hashtag.fa-lg
+            li.breadcrumb-item
+                a(href='#') Champion Points
+
+    .row
+        .col-md-12
+            .tile
+                .tile-header
+                    .tile-title.text-center Centro de caje: #{redemptionCenter}
+                .tile-body.text-center
+                    if errors && errors.length
+                        .bs-component.text-left
+                            .alert.alert-danger.text-left.alert-dismissible
+                                button(class='close', type='button', data-dismiss='alert') x
+                                .strong.text-left Oops, al parecer encontramos unos errores al tratar de enviar los puntos!
+                                each error in errors
+                                    ul
+                                        li=error.msg || error
+                    form(class='form-horizontal', method='POST', action='/lecturer/champion-points', id='pointsAssignmentForm')
+                        input(type='hidden', name='_csrf', value=csrfToken)
+                        input(type='hidden', name='lrc', value=lrc)
+                        input(type='hidden', name='redemptionCenter', value=redemptionCenter)
+                        .form-group.row
+                            .col-md-2
+                            .col-md-8
+                                .row
+                                    label.control-label.col-md-3 Estudiante
+                                    select(id='selectStudent', name='student', class='form-control col-md-8')
+                            .col-md-2
+                        .form-group.row
+                            .col-md-2
+                            .col-md-8
+                                .row
+                                    label.control-label.col-md-3.mt-5 Puntos (quitar/agregar)
+                                    .qty.mt-5.col-md-8
+                                        span.minus.bg-danger -
+                                        | &nbsp;&nbsp;&nbsp;
+                                        input(type='number', class='count', name='points', value='0')
+                                        | &nbsp;&nbsp;&nbsp;
+                                        span.plus.bg-info +
+                            .col-md-2
+                        .form-group.row
+                            .col-md-2
+                            .col-md-8
+                                .row
+                                    label.control-label.col-md-3 Razon de la asignacion de puntos
+                                    textarea(class='form-control col-md-8', name='reason')
+                            .col-md-2
+                        .form-group.row
+                            .col-md-2
+                            .col-md-8
+                                .row.text-center
+                                    .col-md-3
+                                    .btn-container.col-md-8
+                                        button(class='btn btn-primary btn-block')
+                                            i(class='fa fa-check fa-lg fa-fw')
+                                            | Enviar
+                            .col-md-2
+
+block specific-js
+    script(type="text/javascript" src="http://localhost:3000/js/plugins/select2.min.js")
+    script.
+        $(document).ready(function () {
+
+            $("#pointsAssignmentForm").submit(function (){
+                $("#pointsAssignmentForm button").attr("disabled", true);
+            });
+
+            $(document).on('click', '.plus', function () {
+                $('.count').val(parseInt($('.count').val()) + 1);
+            });
+            $(document).on('click', '.minus', function () {
+                $('.count').val(parseInt($('.count').val()) - 1);
+            });
+
+            const backendUrl = '#{backendUrl}';
+            $('#selectStudent').select2({
+                // multiple: false,
+                ajax: {
+                    url: `${backendUrl}/api/students/search`,
+                    dataType: 'json',
+                    data: function (params) {
+                        let query = {
+                            criteria: params.term
+                        }
+                        return query;
+                    },
+                    processResults: function (data) {
+                        const items = data.students.map(student => {
+                            return {
+                                id: student.email,
+                                text: `${student.firstname} ${student.lastname} <${student.email}>`
+                            }
+                        });
+                        return {
+                            results: items
+                        }
+                    }
+                }
+            });
+
+            $("#selectStudent").data('select2').$container.addClass('col-md-8');
+
+        });
+

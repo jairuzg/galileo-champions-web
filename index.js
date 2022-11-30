@@ -32,16 +32,19 @@ app.use((req, res, next) => {
     res.locals.session = req.session;
     res.locals.error = req.flash('error') || req.session.error;
     res.locals.errors = req.flash('errors');
+    res.locals.message = req.flash("message");
     next();
 });
 
 const {authRouter} = require("./controllers/auth.controller");
 const {storefrontRouter} = require("./controllers/storefront.controller");
 const {rockstarRouter} = require("./controllers/rockstar.controller");
+const {lecturerRouter} = require("./controllers/lecturer.controller");
 
 app.use(authRouter);
 app.use(storefrontRouter);
 app.use(rockstarRouter);
+app.use(lecturerRouter);
 app.use(function (req, res, next) {
     notFoundHandler(req, res, next);
 });

@@ -4,8 +4,8 @@ aside.app-sidebar
     .app-sidebar__user
         img.app-sidebar__user-avatar(src='https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg', alt='User Image')
         div
-            p.app-sidebar__user-name John Doe
-            p.app-sidebar__user-designation Frontend Developer
+            p.app-sidebar__user-name=user.firstname
+            p.app-sidebar__user-designation=user.role
 
     ul.app-menu
         li

@@ -1,6 +1,7 @@
 const translate = require('translate');
 const {GOOGLE_PROVIDER} = require("../config/constants");
-const {TRANSLATION_LANG} = require("../config/app_config");
+const {TRANSLATION_LANG, PASSPORT_ID} = require("../config/app_config");
+const localStorage = require('local-storage');
 
 translate.engine = GOOGLE_PROVIDER;
 
@@ -30,9 +31,23 @@ const parseStateVariables = (unparsedString) => {
 const object2KeyValueString = (obj) => {
     return JSON.stringify(obj).replace(/[\"|\'|\{|\}]/g, "");
 }
+
+const setLocalstorage = (key, value) => {
+    const passportId = localStorage.get("passportId");
+    return localStorage.set(key + passportId, value);
+};
+
+const getLocalstorage = (key) => {
+    const passportId = localStorage.get("passportId");
+    return localStorage.get(key + passportId);
+};
+
 module.exports = {
     translate: translate,
     translateEVErrorMessages: translateEVErrorMessages,
     parseStateVariables: parseStateVariables,
-    object2KeyValueString: object2KeyValueString
+    object2KeyValueString: object2KeyValueString,
+    setLocalstorage: setLocalstorage,
+    getLocalstorage: getLocalstorage,
+    localStorage, localStorage
 }
