@@ -1,0 +1,47 @@
+extends /student/student_layout.pug
+
+block variables
+    - var activePage = 'championPoints';
+
+block title
+    title Galileo Champions - Portal Estudiantes
+
+block stylesheets
+    link(href="/css/student/student_champion_points.css", rel="stylesheet")
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-hashtag
+                |  Champion Points
+            p Mis champion points acumulados hasta este momento
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-hashtag.fa-lg
+            li.breadcrumb-item
+                a(href='#') Champion Points
+
+    .row
+        .col-md-1
+        .col-md-8
+            .row
+                if championPoints.length
+                    each championPoint in championPoints
+                        .col-md-6
+                            div(class="tile champion-points-tile", data-id=championPoint.id)
+                                .tile-header.text-center
+                                    .tile-title Centro de canje: #{championPoint.redemptionCenter}
+                                    .tile-title Puntos: #{championPoint.points}
+                                    .tile-title Administrador: #{championPoint.modifiedBy}
+        .col-md-1
+
+block specific-js
+    script.
+        $(document).ready(function(){
+            $("div.tile.champion-points-tile").click(function(e){
+                const championPointId = e.currentTarget.getAttribute("data-id");
+                document.location = `/student/champion-points/${championPointId}`;
+            });
+        });

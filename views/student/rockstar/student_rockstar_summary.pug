@@ -1,0 +1,55 @@
+extends /student/student_layout.pug
+
+block variables
+    - var activePage = 'rockstarSummary';
+
+block title
+    title Portal Estudiantes
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-star
+                |  Galileo Rockstar
+            p Informacion sobre el rockstar del semestre
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-star.fa-lg
+            li.breadcrumb-item
+                a(href='#') Galileo Rockstar
+
+    .row
+        .col-md-2
+        .col-md-8
+                .row
+                    .col-md-2
+                    .col-md-8
+                        if errors == ""
+                            .tile
+                                .tile-header
+                                    .tile-title Felicidades! Eres el estudiante rockstar del momento, para canjear tus puntos
+                                        | puedes escribir a cualquier catedratico de tu eleccion y solicitar la asignacion de puntos
+                                        | rockstar a puntos netos del centro de canje
+                                .tile-body
+                                    img(class="img-responsive", src="/gifs/podio.gif")
+                        else
+                            .tile
+                                .tile-header
+                                    .tile-title Lo siento! no eres el rockstar del momento, pero no todas son malas noticias, aun puedes
+                                        | ganar si te esfuerzas en tus clases y ayudando a tus compañeros
+                                .tile-body
+                                    img(class="img-responsive", src="/gifs/perdedor.gif")
+                    .col-md-2
+
+        .col-md-2
+
+block specific-js
+    script.
+        $(document).ready(function () {
+            $(".form-transfer-rockstar").submit(function () {
+                $(".form-transfer-rockstar button").attr("disabled", true);
+            });
+        });
+

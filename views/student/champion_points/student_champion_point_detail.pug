@@ -1,0 +1,53 @@
+extends /student/student_layout.pug
+
+block variables
+    - var activePage = 'championPoints';
+
+block title
+    title Galileo Champions - Portal Estudiantes
+
+block stylesheets
+    link(href="/css/student/student_champion_points.css", rel="stylesheet")
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-hashtag
+                |  Champion Points
+            p Mis champion points acumulados hasta este momento
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-hashtag.fa-lg
+            li.breadcrumb-item
+                a(href='#') Champion Points
+
+    .row
+        .col-md-1
+        .col-md-8
+            .row
+                if championPoint !== undefined && championPoint != ""
+                    .col-md-12
+                        .tile.champion-points-tile
+                            .tile-header
+                                .tile-title Centro de canje: #{championPoint.redemptionCenter}
+                                .tile-title Puntos: #{championPoint.points}
+                                .tile-title Administrador: #{championPoint.modifiedBy}
+                            .tile-body
+                                h2 Historial de tus puntos
+                                table.table.table-striped
+                                    thead
+                                        tr
+                                            th Fecha
+                                            th Descipcion
+                                            th Puntos al final
+                                            th Quien lo hizo
+                                    tbody
+                                        each log in championPoint.logs
+                                            tr
+                                                td=log.modifiedAt
+                                                td=log.reason
+                                                td=log.points
+                                                td=log.modifiedBy
+        .col-md-1

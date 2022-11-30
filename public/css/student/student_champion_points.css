@@ -1,0 +1,6 @@
+.champion-points-tile:hover {
+    cursor: pointer;
+    border-left-color: blue;
+    border-left-width: 5px;
+    border-left-style: groove;
+}

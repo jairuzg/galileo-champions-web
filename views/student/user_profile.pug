@@ -52,7 +52,7 @@ block content
                                     button(class='close', type='button', data-dismiss='alert') x
                                     .strong.text-left=message
                         h4.line-head Perfil
-                        form(class="form-vertical", id="studentProfileForm", method="POST", action="/auth/change-password")
+                        form(class="form-vertical", id="studentProfileForm", method="POST", action="/auth/change-password?redirectUrl=/student/profile")
                             input(type="hidden", name="_csrf", value=csrfToken)
                             .row.mb-4
                                 .col-md-4

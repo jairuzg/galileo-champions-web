@@ -2,6 +2,7 @@ const {axiosInstance, BACKEND_CONF, TRANSLATION_LANG} = require("../../config/ap
 const appUtils = require("../../common/utils");
 const {HTTP_STATUS} = require("../../config/constants");
 const {getLecturerRedemptionCentersFromServer} = require("../redemption_center/redemption_center.service");
+const serviceUtils = require("../service_utils.service");
 
 const getRockstarSummary = async () => {
     let error, rockstarChampions;
@@ -42,7 +43,18 @@ const transferRockstarPrizeToRedemptionCenter = async (championPointsRequest) =>
     return {error, isTransferred};
 };
 
+const getStudentRockstarInfo = async () => {
+    let error, isStudentRockstar;
+    await axiosInstance.get(`${BACKEND_CONF.BASE_URL}/api/rockstar/student/rockstar-info`).then(rockstarResp => {
+        if (rockstarResp === HTTP_STATUS.OK) isStudentRockstar = true;
+    }).catch(async ex => {
+        error = serviceUtils.getErrorDataFromExceptionOrResponse(ex);
+    });
+    return {error, isStudentRockstar};
+};
+
 module.exports = {
     getRockstarSummary: getRockstarSummary,
-    transferRockstarPrizeToRedemptionCenter: transferRockstarPrizeToRedemptionCenter
+    transferRockstarPrizeToRedemptionCenter: transferRockstarPrizeToRedemptionCenter,
+    getStudentRockstarInfo: getStudentRockstarInfo
 };

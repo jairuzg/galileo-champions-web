@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require("passport");
 const {EMAIL_PROVIDER, STUDENT_ROLE} = require("../config/constants");
-const {body, validationResult, param} = require("express-validator");
+const {body, validationResult, param, query} = require("express-validator");
 const authService = require("../services/auth/auth.service");
 const authRouter = express.Router();
 require('./../services/passports/passport_google')(passport);
@@ -252,24 +252,29 @@ authRouter.get('/reset-password-error', (req, res) => {
 });
 
 authRouter.post("/auth/change-password",
+    query("redirectUrl"),
     body("password").notEmpty().withMessage("La contraseña no puede estar vacía"),
     (req, res, next) => {
         const validation = validationResult(req);
         if (!validation.isEmpty()) {
             req.flash("errors", validation.errors);
-            return res.redirect("/lecturer/profile");
+            return res.redirect(req.query.redirectUrl ? req.query.redirectUrl : "/lecturer/profile");
         } else {
             authService.changeUserPassword(req.user.email, req.body.password).then(changeResp => {
                 if (changeResp.error) {
                     req.flash("errors", [changeResp.error]);
-                    return res.redirect("/lecturer/profile");
+                    return res.redirect(req.query.redirectUrl ? req.query.redirectUrl : "/lecturer/profile");
                 } else {
                     req.flash("message", "Tu contraseña fue actualizada exitosamente");
-                    return res.redirect("/lecturer/profile");
+                    return res.redirect(req.query.redirectUrl ? req.query.redirectUrl : "/lecturer/profile");
                 }
             });
         }
     });
+
+authRouter.get("/auth/forgot-password", (req, res)=>{
+    return res.render("auth/forgot_password", {csrfToken: req.csrfToken()});
+});
 
 module.exports = {
     authRouter: authRouter

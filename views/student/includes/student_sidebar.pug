@@ -10,7 +10,12 @@ aside.app-sidebar
 
     ul.app-menu
         li
-            a.app-menu__item(href=activePage != 'studentIndex' ? '/student':'#' class={'active': activePage == 'studentIndex'})
+            a.app-menu__item(href=activePage != 'studentIndex' ? '/student': '#' class={'active': activePage == 'studentIndex'})
+                i.app-menu__icon.fa.fa-home
+                span.app-menu__label Home
+
+        li
+            a.app-menu__item(href=activePage != 'championPoints' ? '/student/champion-points':'#' class={'active': activePage == 'championPoints'})
                 i.app-menu__icon.fa.fa-hashtag
                 span.app-menu__label Champion Points
 
