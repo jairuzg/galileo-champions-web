@@ -40,11 +40,14 @@ const {authRouter} = require("./controllers/auth.controller");
 const {storefrontRouter} = require("./controllers/storefront.controller");
 const {rockstarRouter} = require("./controllers/rockstar.controller");
 const {lecturerRouter} = require("./controllers/lecturer.controller");
+const {studentRouter} = require("./controllers/student.controller");
 
 app.use(authRouter);
 app.use(storefrontRouter);
 app.use(rockstarRouter);
 app.use(lecturerRouter);
+app.use(studentRouter);
+
 app.use(function (req, res, next) {
     notFoundHandler(req, res, next);
 });

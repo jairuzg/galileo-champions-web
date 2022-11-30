@@ -7,12 +7,9 @@ const {body, query, validationResult} = require("express-validator");
 const {BACKEND_CONF} = require("../config/app_config");
 const championPointsService = require("../services/champion_points/champion_points.service");
 const rockstarService = require("../services/rockstar/galileo_rockstar.service");
-const appUtils = require("../common/utils");
 const lecturerRouter = express.Router();
 
-lecturerRouter.use(isAuth, checkRequiredPermissions([LECTURER_ROLE]));
-
-lecturerRouter.get("/lecturer", (req, res) => {
+lecturerRouter.get("/lecturer", isAuth, checkRequiredPermissions([LECTURER_ROLE]), (req, res) => {
     redemptionCenterService.getLecturerRedemptionCenters().then(rcResp => {
         const resOptions = {
             user: req.user,
@@ -23,7 +20,7 @@ lecturerRouter.get("/lecturer", (req, res) => {
     });
 });
 
-lecturerRouter.get('/lecturer/champion-points',
+lecturerRouter.get('/lecturer/champion-points', isAuth, checkRequiredPermissions([LECTURER_ROLE]),
     query("lrc").isString().notEmpty().withMessage("No recibimos para que centro de canje se mando el request"),
     query("redemptionCenter").isString().notEmpty().withMessage("No recibimos el nombre del centro de canje"),
     (req, res, next) => {
@@ -38,7 +35,7 @@ lecturerRouter.get('/lecturer/champion-points',
     }
 );
 
-lecturerRouter.post('/lecturer/champion-points',
+lecturerRouter.post('/lecturer/champion-points', isAuth, checkRequiredPermissions([LECTURER_ROLE]),
     body('student').isEmail().withMessage("El email del estudiante es invalido o no fue recibido"),
     body("lrc").isString().withMessage("No recibimos para que centro de canje se mando el request"),
     body("reason").notEmpty().withMessage("No recibimos la razon por la cual estas asignando los puntos"),
@@ -68,33 +65,34 @@ lecturerRouter.post('/lecturer/champion-points',
     }
 );
 
-lecturerRouter.get("/lecturer/rockstar-summary", (req, res, next) => {
-    rockstarService.getRockstarSummary().then(summaryResp => {
-        if (summaryResp.error) {
-            return res.render("lecturer/rockstar/rockstar_summary", {
-                errors: [summaryResp.error.message],
-                user: req.user,
-                csrfToken: req.csrfToken()
-            });
-        } else {
-            redemptionCenterService.getLecturerRedemptionCenters().then(rcResp => {
-                if (rcResp.error) return res.render("lecturer/rockstar/rockstar_summary", {
-                    errors: [rcResp.error.message],
+lecturerRouter.get("/lecturer/rockstar-summary", isAuth, checkRequiredPermissions([LECTURER_ROLE]),
+    (req, res, next) => {
+        rockstarService.getRockstarSummary().then(summaryResp => {
+            if (summaryResp.error) {
+                return res.render("lecturer/rockstar/rockstar_summary", {
+                    errors: [summaryResp.error.message],
                     user: req.user,
-                    csrfToken: req.csrfToken()
-                }); else return res.render("lecturer/rockstar/rockstar_summary", {
-                    user: req.user,
-                    rockstarChampions: summaryResp.rockstarChampions,
-                    redemptionCenters: rcResp.redemptionCenters,
                     csrfToken: req.csrfToken()
                 });
-            });
-        }
+            } else {
+                redemptionCenterService.getLecturerRedemptionCenters().then(rcResp => {
+                    if (rcResp.error) return res.render("lecturer/rockstar/rockstar_summary", {
+                        errors: [rcResp.error.message],
+                        user: req.user,
+                        csrfToken: req.csrfToken()
+                    }); else return res.render("lecturer/rockstar/rockstar_summary", {
+                        user: req.user,
+                        rockstarChampions: summaryResp.rockstarChampions,
+                        redemptionCenters: rcResp.redemptionCenters,
+                        csrfToken: req.csrfToken()
+                    });
+                });
+            }
+        });
     });
-});
 
-lecturerRouter.post("/lecturer/transfer-rockstar-prize",
-    body("lrc").notEmpty().withMessage("No pudimos recibir el centro de canje, vuelve a intentarlo"),
+lecturerRouter.post("/lecturer/transfer-rockstar-prize", isAuth, checkRequiredPermissions([LECTURER_ROLE]),
+body("lrc").notEmpty().withMessage("No pudimos recibir el centro de canje, vuelve a intentarlo"),
     body("student").isEmail().withMessage("El email del estudiante es invalido o no se encontro"),
     body("rockstarPeriod").isNumeric().withMessage("No pudimos encontrar el periodo de votaciones"),
     (req, res, next) => {
@@ -105,10 +103,12 @@ lecturerRouter.post("/lecturer/transfer-rockstar-prize",
             } else return res.render("lecturer/rockstar/transfer_success", {user: req.user});
         });
     }
-);
+)
+;
 
-lecturerRouter.get("/lecturer/profile", (req, res, next) => {
-    return res.render("lecturer/user_profile", {user: req.user, csrfToken: req.csrfToken()});
-});
+lecturerRouter.get("/lecturer/profile", isAuth, checkRequiredPermissions([LECTURER_ROLE]),
+    (req, res, next) => {
+        return res.render("lecturer/user_profile", {user: req.user, csrfToken: req.csrfToken()});
+    });
 
 module.exports = {lecturerRouter};

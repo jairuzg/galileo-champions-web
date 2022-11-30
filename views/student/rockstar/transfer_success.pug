@@ -1,0 +1,31 @@
+extends /lecturer/layout.pug
+
+block variables
+    - var activePage = 'rockstarSummary';
+
+block title
+    title Portal catedráticos
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-star
+                |  Galileo Rockstar
+            p Los estudiantes rockstar del periodo
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-star.fa-lg
+            li.breadcrumb-item
+                a(href='#') Galileo Rockstar
+
+    .row
+        .col-md-12
+            .tile
+                .tile-body
+                    .bs-component
+                        .alert.alert-success
+                            .strong Enhorabuena! La transferencia del premio rockstar fue realizada con éxito
+                            p
+                                a(class='alert-link', href='/lecturer/rockstar-summary') Regresar

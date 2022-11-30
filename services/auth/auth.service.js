@@ -77,7 +77,6 @@ const checkRequiredPermissions = (requiredPermissions) => {
     return (req, res, next) => {
         if (req.isAuthenticated) {
             const role = req.user.role;
-
             const hasPermissions = requiredPermissions.includes(role);
 
             if (!hasPermissions) {

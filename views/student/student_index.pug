@@ -1,0 +1,42 @@
+extends /student/student_layout.pug
+
+block variables
+    - var activePage = 'studentIndex';
+
+block title
+    title Galileo Champions - Portal Estudiantes
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-hashtag
+                |  Champion Points
+            p Mis champion points acumulados hasta este momento
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-hashtag.fa-lg
+            li.breadcrumb-item
+                a(href='#') Champion Points
+
+    .row
+        .col-md-2
+        .col-md-8
+            .tile
+                .tile-header.text-center
+                    if championPointsSum
+                        .tile-title Vaya al parecer cuentas con #{championPointsSum.championPoints} acumulados, , muy bien, sigue asi!
+                            .row
+                                .col-md-2
+                                .col-md-8
+                                    img(src="/gifs/devolucion_de_dinero.gif", class="img-responsive")
+                                .col-md-2
+                    else
+                        .tile-title Vaya al parecer no cuentas con puntos disponibles aun
+                        .row
+                            .col-md-2
+                            .col-md-8
+                                img(src="/gifs/preocupado.gif", class="img-responsive")
+                            .col-md-2
+        .col-md-2

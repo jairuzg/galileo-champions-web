@@ -1,0 +1,31 @@
+extends /lecturer/layout.pug
+
+block variables
+    - var activePage = 'assignmentSuccess';
+
+block title
+    title Portal catedráticos
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-hashtag
+                |  Champion Points
+            p Asignación de Champion Points
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-hashtag.fa-lg
+            li.breadcrumb-item
+                a(href='/lecturer') Champion Points
+
+    .row
+        .col-md-12
+            .tile
+                .tile-body
+                    .bs-component
+                        .alert.alert-success
+                            .strong Enhorabuena! La asignacion de puntos para el estudiante ha sido enviada con exito
+                            p
+                                a(class='alert-link', href='/') Regresar

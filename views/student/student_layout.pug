@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+
+    //- Variables to set active page in sidebar
+    block variables
+        - var activePage = 'dashboard';
+        - var activeGroup = 'none';
+
+    head
+        meta(name="description", content="Esta es el sitio galileo champions, Donde puedes ver tus puntos ")
+
+        block title
+            title Galileo Champions - Estudiantes
+
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+
+        // Main CSS
+        link(rel='stylesheet', type='text/css', href='/css/main.css')
+        // Font-icon css
+        link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+
+        block stylesheets
+
+    body.app.sidebar-mini
+
+        // Navbar
+        include /includes/_header.pug
+
+        // Sidebar menu
+        include /lecturer/includes/lecturer_sidebar.pug
+
+        main.app-content
+            block content
+
+        //- Javascripts
+        include /includes/_javascript
+
+        // Page specific javascripts
+        block specific-js
