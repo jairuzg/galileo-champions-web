@@ -1,16 +1,21 @@
 const express = require('express');
 const storefrontRouter = express.Router();
-const {isAuth} = require("./helpers.controller");
-const {checkRequiredPermissions} = require("../services/auth/auth.service");
-const {ADMIN_ROLE, LECTURER_ROLE, STUDENT_ROLE} = require("../config/constants");
+const {LECTURER_ROLE, STUDENT_ROLE} = require("../config/constants");
 
-storefrontRouter.get('/', isAuth, checkRequiredPermissions([ADMIN_ROLE, LECTURER_ROLE, STUDENT_ROLE]), function (req, res) {
-    if (req.user.role === LECTURER_ROLE) return res.redirect('/lecturer');
-    if (req.user.role === STUDENT_ROLE) return res.redirect('/student');
+storefrontRouter.get('/', function (req, res, next) {
+    if (req.isAuthenticated()) {
+        if (req.user.role === LECTURER_ROLE) return res.redirect('/lecturer');
+        if (req.user.role === STUDENT_ROLE) return res.redirect('/student');
+    }
+    return res.redirect("/about");
 });
 
 storefrontRouter.get("/privacy", (req, res) => {
     return res.render("storefront/privacy");
+});
+
+storefrontRouter.get("/about", (req, res) => {
+    return res.render("storefront/about");
 });
 
 module.exports = {
